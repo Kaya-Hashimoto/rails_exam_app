@@ -14,15 +14,22 @@ class PostsController < ApplicationController
   end
 
   def edit
-  end
-
-  def show
+    @post = Post.find(params[:id])
   end
 
   def update
+    @post = Post.find(params[:id])
+    if @post.update(post_params)
+      redirect_to posts_path, notice: "編集しました"
+    else
+      render :edit
+    end
   end
 
   def destroy
+    @post = Post.find(params[:id])
+    @post.destroy
+    redirect_to posts_path, notice:"削除しました"
   end
 
   
