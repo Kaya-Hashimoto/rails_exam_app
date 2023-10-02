@@ -9,8 +9,16 @@ class PostsController < ApplicationController
   end
 
   def create
-    Post.create(post_params)
-    redirect_to posts_path
+    @post = Post.new(post_params)
+    if params[:back]
+      render :new
+    else
+      if @post.save
+      redirect_to posts_path, notice:"投稿しました"
+      else
+        render :new
+      end
+    end
   end
 
   def edit
@@ -30,6 +38,11 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
     @post.destroy
     redirect_to posts_path, notice:"削除しました"
+  end
+
+  def confirm
+    @post = Post.new(post_params)
+    rander :new if @post.invalid?
   end
 
   
